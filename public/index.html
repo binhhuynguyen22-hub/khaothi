@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khảo thí THPTQG — Hệ thống thi thử trực tuyến</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#6366f1;--primary-d:#4f46e5;--primary-l:#eef2ff;
+  --bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;
+  --border:#e2e8f0;--success:#10b981;--danger:#ef4444;--warning:#f59e0b;
+  --radius:14px;--shadow:0 1px 3px rgba(15,23,42,.06),0 10px 30px -18px rgba(15,23,42,.35);
+}
+body{font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+.muted{color:var(--muted);font-size:13.5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:10px;border:none;font-weight:600;font-size:14px;cursor:pointer;transition:.18s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 14px -4px rgba(99,102,241,.6)}
+.btn-primary:hover{background:var(--primary-d)}
+.btn-ghost{background:#fff;border:1px solid var(--border);color:#334155}
+.btn-ghost:hover{background:#f8fafc;border-color:#cbd5e1}
+.btn-danger{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.btn-danger:hover{background:#fee2e2}
+.btn-sm{padding:7px 12px;font-size:13px;border-radius:8px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:#fff;transition:.15s;color:var(--text)}
+.input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+textarea.input{resize:vertical;line-height:1.6}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:13px;font-weight:600;color:#334155}
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;
+  background:radial-gradient(900px 500px at 8% 0%,#c7d2fe 0%,transparent 55%),
+  radial-gradient(900px 500px at 95% 100%,#bfdbfe 0%,transparent 50%),
+  linear-gradient(140deg,#eef2ff,#f8fafc)}
+.auth-card{width:100%;max-width:430px;background:#fff;border-radius:22px;padding:34px 32px;box-shadow:0 30px 70px -30px rgba(30,41,59,.45);border:1px solid rgba(255,255,255,.7)}
+.brand{text-align:center;margin-bottom:24px}
+.brand-logo{width:62px;height:62px;margin:0 auto 12px;border-radius:18px;display:grid;place-items:center;font-size:30px;
+  background:linear-gradient(135deg,var(--primary),#8b5cf6);box-shadow:0 12px 26px -10px rgba(99,102,241,.9)}
+.brand h1{font-size:22px;letter-spacing:-.4px}
+.brand p{color:var(--muted);font-size:13.5px;margin-top:3px}
+.tabs{display:flex;gap:6px;background:#f1f5f9;padding:5px;border-radius:12px}
+.tab{padding:9px 16px;border-radius:9px;border:none;background:transparent;font-weight:600;font-size:14px;color:var(--muted);cursor:pointer;transition:.18s}
+.tab.active{background:#fff;color:var(--primary);box-shadow:0 1px 4px rgba(15,23,42,.1)}
+.notice{padding:11px 14px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;
+  font-size:12.5px;color:#1e40af;margin-bottom:14px;line-height:1.5}
+.topbar{background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.topbar-inner{max-width:1100px;margin:0 auto;padding:0 20px;height:66px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:16px;letter-spacing:-.3px}
+.logo-mark{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;box-shadow:0 6px 16px -8px rgba(99,102,241,.95)}
+.user-box{display:flex;align-items:center;gap:12px}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;font-size:14px;background:linear-gradient(135deg,#6366f1,#a855f7)}
+.user-meta{line-height:1.25;text-align:right}
+.user-meta .n{font-weight:700;font-size:13.5px}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.3px}
+.badge-teacher{background:#ede9fe;color:#6d28d9}
+.badge-student{background:#dbeafe;color:#1d4ed8}
+.badge-subject{background:#ecfdf5;color:#047857}
+.badge-gray{background:#f1f5f9;color:#475569}
+.subhead{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:66px;z-index:45}
+.subhead-inner{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;gap:8px;overflow-x:auto}
+.page{padding:28px 20px 80px;max-width:1100px;margin:0 auto}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.page-head h2{font-size:22px;letter-spacing:-.4px}
+.page-head p{color:var(--muted);font-size:13.5px;margin-top:2px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.grid-3{display:grid;gap:14px;grid-template-columns:1fr 1fr 160px}
+@media(max-width:700px){.grid-3{grid-template-columns:1fr}}
+.exam-card{padding:20px;display:flex;flex-direction:column;gap:12px;transition:.2s}
+.exam-card:hover{transform:translateY(-3px);box-shadow:0 20px 40px -24px rgba(15,23,42,.5)}
+.exam-card h3{font-size:16.5px;letter-spacing:-.2px}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;font-size:12.5px;color:var(--muted)}
+.meta-chip{background:#f8fafc;border:1px solid var(--border);padding:4px 10px;border-radius:8px;font-weight:600;color:#475569}
+.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty .ico{font-size:46px;margin-bottom:12px;opacity:.6}
+.empty h3{color:var(--text);font-size:16px;margin-bottom:6px}
+.q-edit-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media(max-width:700px){.opt-grid{grid-template-columns:1fr}}
+.opt-edit{display:flex;align-items:center;gap:9px}
+.opt-radio{display:flex;align-items:center;gap:6px;cursor:pointer;flex:0 0 auto;font-weight:700;font-size:13px;color:#64748b}
+.opt-radio input{width:17px;height:17px;accent-color:var(--primary);cursor:pointer}
+.exam-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;box-shadow:0 6px 20px -18px rgba(15,23,42,.5)}
+.exam-bar-inner{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.exam-title{font-weight:800;font-size:16px;letter-spacing:-.3px}
+.exam-sub{font-size:12.5px;color:var(--muted)}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:22px;padding:8px 18px;border-radius:12px;background:var(--primary-l);color:var(--primary-d);letter-spacing:1px}
+.timer.danger{background:#fef2f2;color:#dc2626;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.55}}
+.q-card{padding:22px;margin-bottom:16px}
+.q-num{display:inline-block;background:var(--primary-l);color:var(--primary-d);font-weight:800;font-size:12.5px;padding:4px 12px;border-radius:8px;margin-bottom:12px}
+.q-text{font-size:15.5px;font-weight:600;margin-bottom:16px;line-height:1.6;white-space:pre-wrap}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){.opts{grid-template-columns:1fr}}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;transition:.15s;background:#fff}
+.opt:hover{border-color:#c7d2fe;background:#fafbff}
+.opt input{display:none}
+.opt-key{width:28px;height:28px;flex:0 0 28px;display:grid;place-items:center;border-radius:8px;background:#f1f5f9;font-weight:700;font-size:13px;color:#475569;transition:.15s}
+.opt-text{font-size:14.5px}
+.opt:has(input:checked){border-color:var(--primary);background:var(--primary-l)}
+.opt:has(input:checked) .opt-key{background:var(--primary);color:#fff}
+.submit-bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);z-index:60;box-shadow:0 -6px 24px -18px rgba(15,23,42,.6)}
+.submit-bar-inner{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.score-hero{text-align:center;padding:38px 24px;border-radius:20px;margin-bottom:22px;color:#fff;
+  background:linear-gradient(135deg,#6366f1,#8b5cf6 55%,#a855f7)}
+.score-hero .num{font-size:60px;font-weight:900;letter-spacing:-2px;line-height:1}
+.score-hero .lbl{opacity:.85;font-size:14px;margin-top:6px;font-weight:600}
+.score-hero .sub{margin-top:14px;font-size:14px;background:rgba(255,255,255,.18);display:inline-block;padding:6px 16px;border-radius:999px}
+.review-item{padding:18px 22px;border-bottom:1px solid var(--border)}
+.review-item:last-child{border-bottom:none}
+.ans-line{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:6px}
+.tag{padding:3px 10px;border-radius:7px;font-weight:700;font-size:12.5px}
+.tag-ok{background:#ecfdf5;color:#047857}
+.tag-no{background:#fef2f2;color:#b91c1c}
+.tag-neutral{background:#f1f5f9;color:#475569}
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:#fff;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:13px 16px;background:#f8fafc;font-size:12.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:13px 16px;border-bottom:1px solid #f1f5f9}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafbff}
+.pick{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;transition:.15s;background:#fff}
+.pick:hover{border-color:#c7d2fe;background:#fafbff}
+.pick input{width:18px;height:18px;accent-color:var(--primary);cursor:pointer}
+.pick:has(input:checked){border-color:var(--primary);background:var(--primary-l)}
+#toast{position:fixed;right:22px;bottom:22px;z-index:999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{padding:13px 20px;border-radius:12px;background:#0f172a;color:#fff;font-size:14px;font-weight:600;
+  box-shadow:0 16px 40px -14px rgba(15,23,42,.7);opacity:0;transform:translateY(14px);transition:.3s}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.success{background:linear-gradient(135deg,#059669,#10b981)}
+.toast.error{background:linear-gradient(135deg,#dc2626,#ef4444)}
+.toast.warning{background:linear-gradient(135deg,#d97706,#f59e0b)}
+.divider{height:1px;background:var(--border);margin:18px 0}
+.row-between{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   KHẢO THÍ THPTQG — Frontend gọi API
+   - Đăng ký CHỈ tạo HỌC SINH
+   - Giảng viên mặc định: Hbinh / Hb@22052007 (seed ở backend)
+   ========================================================= */
+
+/* ---------------- Utilities (DUY NHẤT 1 LẦN) ---------------- */
+const $  = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const KEY = 'ABCD';
+
+function fmtTime(sec){
+  sec = Math.max(0, sec);
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+function fmtDate(ts){
+  const d = new Date(ts);
+  return d.toLocaleDateString('vi-VN') + ' ' + d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+}
+function initials(name){
+  const p = String(name||'?').trim().split(/\s+/);
+  return (p[p.length-1][0] || '?').toUpperCase();
+}
+
+/* ---------------- API CLIENT ---------------- */
+const API_BASE = '';
+let TOKEN = localStorage.getItem('khaothi_token') || '';
+
+async function api(path, opts = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
+  if (TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+  const res = await fetch(API_BASE + path, { ...opts, headers });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Lỗi kết nối server');
+  return data;
+}
+
+/* ---------------- State ---------------- */
+const state = {
+  user: null,
+  authTab: 'login',
+  tab: 'exams',
+  draft: null,
+  viewExamId: null,
+  taking: null,
+  answers: {},
+  timeLeft: 0,
+  timer: null,
+  result: null,
+  examsCache: [],
+  studentsCache: [],
+  resultsCache: []
+};
+
+/* ---------------- Toast ---------------- */
+function toast(msg, type = 'success'){
+  const wrap = $('#toast');
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  wrap.appendChild(el);
+  requestAnimationFrame(() => el.classList.add('show'));
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 320); }, 2600);
+}
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+async function render(){
+  const root = $('#app');
+  if (!state.user){
+    root.innerHTML = viewAuth();
+    bindAuth();
+    return;
+  }
+  if (state.taking){ root.innerHTML = viewTaking(); bindTaking(); return; }
+  await loadData();
+  root.innerHTML = viewApp();
+  bindApp();
+}
+
+async function loadData(){
+  try {
+    if (state.user.role === 'teacher'){
+      state.examsCache = await api('/api/exams');
+      state.studentsCache = await api('/api/students');
+      if (state.tab === 'results') state.resultsCache = await api('/api/results');
+    } else {
+      state.examsCache = await api('/api/exams');
+      state.resultsCache = await api('/api/results');
+    }
+  } catch (e){
+    toast(e.message, 'error');
+    if (e.message.includes('đăng nhập lại') || e.message.includes('Chưa đăng nhập')){
+      localStorage.removeItem('khaothi_token');
+      TOKEN = '';
+      state.user = null;
+      render();
+    }
+  }
+}
+
+/* ---------------- Auth view ---------------- */
+function viewAuth(){
+  const isReg = state.authTab === 'register';
+  return `
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="brand">
+        <div class="brand-logo">🎓</div>
+        <h1>Khảo thí THPTQG</h1>
+        <p>Hệ thống thi thử trực tuyến</p>
+      </div>
+
+      <div class="tabs" style="margin-bottom:22px">
+        <button class="tab ${!isReg?'active':''}" data-auth-tab="login" style="flex:1">Đăng nhập</button>
+        <button class="tab ${isReg?'active':''}" data-auth-tab="register" style="flex:1">Đăng ký</button>
+      </div>
+
+      ${isReg ? `
+        <div class="notice">
+          ℹ️ <strong>Đăng ký chỉ dành cho Học sinh.</strong><br>
+          Vui lòng liên hệ giảng viên để được cấp tài khoản khác.
+        </div>` : ''}
+
+      <form id="auth-form" autocomplete="off">
+        ${isReg ? `<div class="field"><label>Họ và tên</label>
+          <input class="input" name="name" placeholder="Nguyễn Văn A" required></div>` : ''}
+
+        <div class="field"><label>Tên đăng nhập</label>
+          <input class="input" name="username" placeholder="Nhập tên đăng nhập" required></div>
+
+        <div class="field"><label>Mật khẩu</label>
+          <input class="input" type="password" name="password" placeholder="••••••" required></div>
+
+        <button class="btn btn-primary btn-block" type="submit" style="margin-top:6px" id="auth-submit">
+          ${isReg ? '🎒 Tạo tài khoản Học sinh' : 'Đăng nhập'}
+        </button>
+      </form>
+    </div>
+  </div>`;
+}
+
+function bindAuth(){
+  document.querySelectorAll('[data-auth-tab]').forEach(b => {
+    b.onclick = () => { state.authTab = b.dataset.authTab; render(); };
+  });
+
+  $('#auth-form').onsubmit = async e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const btn = $('#auth-submit');
+    btn.disabled = true;
+    btn.textContent = 'Đang xử lý...';
+
+    try {
+      const endpoint = state.authTab === 'login' ? '/api/login' : '/api/register';
+      const body = state.authTab === 'login'
+        ? { username: f.get('username'), password: f.get('password') }
+        : { name: f.get('name'), username: f.get('username'), password: f.get('password') };
+
+      const data = await api(endpoint, { method: 'POST', body: JSON.stringify(body) });
+      TOKEN = data.token;
+      localStorage.setItem('khaothi_token', TOKEN);
+      state.user = data.user;
+      state.tab = 'exams';
+      toast('Xin chào, ' + data.user.name + '!');
+      render();
+    } catch (err){
+      toast(err.message, 'error');
+      btn.disabled = false;
+      btn.textContent = state.authTab === 'login' ? 'Đăng nhập' : '🎒 Tạo tài khoản Học sinh';
+    }
+  };
+}
+
+/* ---------------- App shell ---------------- */
+function viewApp(){
+  const u = state.user;
+  const isTeacher = u.role === 'teacher';
+
+  let tabsHtml = '';
+  if (isTeacher && !state.draft && !state.viewExamId){
+    const tabs = [
+      { k:'exams',    t:'📚 Đề thi' },
+      { k:'students', t:'👥 Học sinh' },
+      { k:'results',  t:'📊 Kết quả' }
+    ];
+    tabsHtml = `<div class="subhead"><div class="subhead-inner">
+      ${tabs.map(t => `<button class="tab ${state.tab===t.k?'active':''}" data-tab="${t.k}">${t.t}</button>`).join('')}
+    </div></div>`;
+  }
+
+  let body = '';
+  if (isTeacher){
+    if (state.draft) body = viewDraft();
+    else if (state.viewExamId) body = viewExamDetail();
+    else if (state.tab === 'exams') body = viewTeacherExams();
+    else if (state.tab === 'students') body = viewTeacherStudents();
+    else body = viewTeacherResults();
+  } else {
+    body = state.result ? viewResult() : viewStudentExams();
+  }
+
+  return `
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="logo">
+        <div class="logo-mark">🎓</div>
+        <span>Khảo thí THPTQG</span>
+      </div>
+      <div class="user-box">
+        <div class="user-meta">
+          <div class="n">${esc(u.name)}</div>
+          <span class="badge ${isTeacher?'badge-teacher':'badge-student'}">
+            ${isTeacher ? 'GIẢNG VIÊN' : 'HỌC SINH'}
+          </span>
+        </div>
+        <div class="avatar">${esc(initials(u.name))}</div>
+        <button class="btn btn-ghost btn-sm" id="logout">Đăng xuất</button>
+      </div>
+    </div>
+  </div>
+  ${tabsHtml}
+  ${body}`;
+}
+
+function bindApp(){
+  const root = $('#app');
+  const lo = root.querySelector('#logout');
+  if (lo) lo.onclick = () => {
+    clearInterval(state.timer); state.timer = null;
+    localStorage.removeItem('khaothi_token');
+    TOKEN = '';
+    Object.assign(state, { user:null, tab:'exams', draft:null, viewExamId:null, result:null, taking:null, answers:{}, timeLeft:0, examsCache:[], studentsCache:[], resultsCache:[] });
+    render();
+  };
+
+  root.querySelectorAll('[data-tab]').forEach(b => {
+    b.onclick = () => { state.tab = b.dataset.tab; render(); };
+  });
+
+  const u = state.user;
+  if (u.role === 'teacher'){
+    if (state.draft) bindDraft(root);
+    else if (state.viewExamId) bindExamDetail(root);
+    else if (state.tab === 'exams') bindTeacherExams(root);
+    else if (state.tab === 'students') bindTeacherStudents(root);
+  } else {
+    if (state.result) bindResult(root);
+    else bindStudentExams(root);
+  }
+}
+
+/* =========================================================
+   GIÁO VIÊN — Danh sách đề
+   ========================================================= */
+function viewTeacherExams(){
+  const exams = state.examsCache;
+  const students = state.studentsCache;
+
+  const list = exams.length ? `<div class="grid">${exams.map(e => {
+    const assigned = (e.assignedTo || []).length;
+    return `
+    <div class="card exam-card">
+      <div class="row-between">
+        <span class="badge badge-subject">${esc(e.subject)}</span>
+        <span class="badge badge-gray">${e.questions.length} câu</span>
+      </div>
+      <h3>${esc(e.title)}</h3>
+      <div class="meta-row">
+        <span class="meta-chip">⏱ ${e.duration} phút</span>
+        <span class="meta-chip">👥 ${assigned}/${students.length} học sinh</span>
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-primary btn-sm" data-open-exam="${e._id}">Xem &amp; giao đề</button>
+        <button class="btn btn-danger btn-sm" data-del-exam="${e._id}">Xóa</button>
+      </div>
+    </div>`;
+  }).join('')}</div>` : `
+    <div class="card empty">
+      <div class="ico">📝</div>
+      <h3>Chưa có đề thi nào</h3>
+      <p>Bấm "Tạo đề thi mới" để bắt đầu soạn đề.</p>
+    </div>`;
+
+  return `
+  <div class="page">
+    <div class="page-head">
+      <div><h2>Quản lý đề thi</h2><p>Tạo đề, thêm câu hỏi và giao cho học sinh làm bài</p></div>
+      <button class="btn btn-primary" id="new-exam">+ Tạo đề thi mới</button>
+    </div>
+    ${list}
+  </div>`;
+}
+
+function bindTeacherExams(root){
+  const btn = root.querySelector('#new-exam');
+  if (btn) btn.onclick = () => {
+    state.draft = { title:'', subject:'', duration:45, questions:[ newQuestion() ] };
+    render();
+  };
+
+  root.querySelectorAll('[data-open-exam]').forEach(b => {
+    b.onclick = () => { state.viewExamId = b.dataset.openExam; render(); };
+  });
+
+  root.querySelectorAll('[data-del-exam]').forEach(b => {
+    b.onclick = async () => {
+      const ex = state.examsCache.find(e => e._id === b.dataset.delExam);
+      if (!ex) return;
+      if (!confirm(`Xóa đề thi "${ex.title}"?`)) return;
+      try {
+        await api('/api/exams/' + ex._id, { method: 'DELETE' });
+        toast('Đã xóa đề thi');
+        render();
+      } catch (e){ toast(e.message, 'error'); }
+    };
+  });
+}
+
+/* =========================================================
+   GIÁO VIÊN — Soạn đề
+   ========================================================= */
+function newQuestion(){ return { text:'', options:['','','',''], correct:0 }; }
+
+function viewDraft(){
+  const d = state.draft;
+  return `
+  <div class="page">
+    <div class="page-head">
+      <div><h2>Tạo đề thi mới</h2><p>Nhập thông tin đề và soạn câu hỏi.</p></div>
+      <button class="btn btn-ghost" id="cancel-draft">← Quay lại</button>
+    </div>
+
+    <div class="card" style="padding:20px;margin-bottom:18px">
+      <div class="grid-3">
+        <div class="field" style="margin:0"><label>Tên đề thi</label>
+          <input class="input" id="d-title" value="${esc(d.title)}" placeholder="VD: Đề thi thử THPTQG số 01"></div>
+        <div class="field" style="margin:0"><label>Môn thi</label>
+          <input class="input" id="d-subject" value="${esc(d.subject)}" placeholder="VD: Toán"></div>
+        <div class="field" style="margin:0"><label>Thời gian (phút)</label>
+          <input class="input" type="number" id="d-duration" min="1" max="300" value="${d.duration}"></div>
+      </div>
+    </div>
+
+    <div id="q-editor">
+      ${d.questions.map((q, i) => qEditor(q, i)).join('')}
+    </div>
+
+    <button class="btn btn-ghost" id="add-q"
+      style="width:100%;padding:15px;border-style:dashed;border-width:2px;color:var(--primary);font-weight:700">
+      + Thêm câu hỏi
+    </button>
+
+    <div class="divider"></div>
+    <div class="row-between">
+      <span class="muted">Tổng cộng <b>${d.questions.length}</b> câu hỏi</span>
+      <button class="btn btn-primary" id="save-draft" style="padding:12px 28px">💾 Lưu đề thi</button>
+    </div>
+  </div>`;
+}
+
+function qEditor(q, i){
+  return `
+  <div class="card" style="padding:20px;margin-bottom:14px">
+    <div class="q-edit-head">
+      <span class="q-num" style="margin:0">Câu ${i + 1}</span>
+      <button class="btn btn-danger btn-sm" data-remove-q="${i}">Xóa câu</button>
+    </div>
+    <textarea class="input" rows="2" data-q-text="${i}" placeholder="Nội dung câu hỏi...">${esc(q.text)}</textarea>
+    <div class="opt-grid">
+      ${q.options.map((o, j) => `
+        <div class="opt-edit">
+          <label class="opt-radio">
+            <input type="radio" name="correct-${i}" value="${j}"
+                   data-q-correct="${i}" ${q.correct === j ? 'checked' : ''}>
+            <span>${KEY[j]}</span>
+          </label>
+          <input class="input" data-q-opt="${i}-${j}" value="${esc(o)}" placeholder="Đáp án ${KEY[j]}">
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function bindDraft(root){
+  root.querySelector('#cancel-draft').onclick = () => {
+    if (!confirm('Hủy bỏ đề thi đang soạn?')) return;
+    state.draft = null; render();
+  };
+
+  root.querySelector('#d-title').oninput = e => state.draft.title = e.target.value;
+  root.querySelector('#d-subject').oninput = e => state.draft.subject = e.target.value;
+  root.querySelector('#d-duration').oninput = e => state.draft.duration = parseInt(e.target.value) || 1;
+
+  root.querySelectorAll('[data-q-text]').forEach(el => {
+    el.oninput = e => { state.draft.questions[+el.dataset.qText].text = e.target.value; };
+  });
+  root.querySelectorAll('[data-q-opt]').forEach(el => {
+    el.oninput = e => {
+      const [qi, oi] = el.dataset.qOpt.split('-').map(Number);
+      state.draft.questions[qi].options[oi] = e.target.value;
+    };
+  });
+  root.querySelectorAll('[data-q-correct]').forEach(el => {
+    el.onchange = () => { state.draft.questions[+el.dataset.qCorrect].correct = +el.value; };
+  });
+  root.querySelectorAll('[data-remove-q]').forEach(b => {
+    b.onclick = () => {
+      if (state.draft.questions.length === 1) return toast('Phải có ít nhất 1 câu', 'error');
+      state.draft.questions.splice(+b.dataset.removeQ, 1);
+      render();
+    };
+  });
+  root.querySelector('#add-q').onclick = () => {
+    state.draft.questions.push(newQuestion());
+    render();
+    window.scrollTo({ top: document.body.scrollHeight, behavior:'smooth' });
+  };
+
+  root.querySelector('#save-draft').onclick = async () => {
+    const d = state.draft;
+    if (!d.title.trim())   return toast('Nhập tên đề', 'error');
+    if (!d.subject.trim()) return toast('Nhập môn thi', 'error');
+    if (!d.duration || d.duration < 1) return toast('Thời gian không hợp lệ', 'error');
+
+    for (let i = 0; i < d.questions.length; i++){
+      const q = d.questions[i];
+      if (!q.text.trim()) return toast(`Câu ${i + 1}: chưa nhập nội dung`, 'error');
+      for (let j = 0; j < 4; j++){
+        if (!q.options[j].trim()) return toast(`Câu ${i + 1}: thiếu đáp án ${KEY[j]}`, 'error');
+      }
+    }
+
+    const btn = root.querySelector('#save-draft');
+    btn.disabled = true; btn.textContent = 'Đang lưu...';
+
+    try {
+      const exam = await api('/api/exams', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: d.title.trim(),
+          subject: d.subject.trim(),
+          duration: d.duration,
+          questions: d.questions.map(q => ({
+            text: q.text.trim(),
+            options: q.options.map(o => o.trim()),
+            correct: q.correct
+          }))
+        })
+      });
+      state.draft = null;
+      state.viewExamId = exam._id;
+      toast('Đã lưu đề thi!');
+      render();
+    } catch (e){
+      toast(e.message, 'error');
+      btn.disabled = false; btn.textContent = '💾 Lưu đề thi';
+    }
+  };
+}
+
+/* =========================================================
+   GIÁO VIÊN — Chi tiết đề & giao bài
+   ========================================================= */
+function viewExamDetail(){
+  const ex = state.examsCache.find(e => e._id === state.viewExamId);
+  if (!ex){ state.viewExamId = null; return viewTeacherExams(); }
+
+  const students = state.studentsCache;
+  const assigned = new Set((ex.assignedTo || []).map(x => x.toString()));
+
+  return `
+  <div class="page">
+    <div class="page-head">
+      <div>
+        <h2>${esc(ex.title)}</h2>
+        <p>${esc(ex.subject)} • ${ex.questions.length} câu • ${ex.duration} phút</p>
+      </div>
+      <button class="btn btn-ghost" id="back-exams">← Danh sách đề</button>
+    </div>
+
+    <div class="card" style="padding:22px;margin-bottom:20px">
+      <div class="row-between" style="margin-bottom:16px">
+        <div>
+          <h3 style="font-size:16px">👥 Giao đề cho học sinh</h3>
+          <p class="muted">Tích chọn học sinh được phép làm đề này</p>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" id="pick-all">Chọn tất cả</button>
+          <button class="btn btn-ghost btn-sm" id="pick-none">Bỏ chọn</button>
+        </div>
+      </div>
+
+      ${students.length ? `
+        <div class="grid">
+          ${students.map(s => `
+            <label class="pick">
+              <input type="checkbox" data-stu="${s._id}" ${assigned.has(s._id.toString()) ? 'checked' : ''}>
+              <div class="avatar" style="width:32px;height:32px;font-size:12px">${esc(initials(s.name))}</div>
+              <div>
+                <div style="font-weight:600;font-size:14px">${esc(s.name)}</div>
+                <div class="muted">@${esc(s.username)}</div>
+              </div>
+            </label>`).join('')}
+        </div>
+        <div style="margin-top:18px;text-align:right">
+          <button class="btn btn-primary" id="save-assign">Lưu danh sách giao đề</button>
+        </div>
+      ` : `<div class="empty" style="padding:30px"><p>Chưa có học sinh nào. Hãy thêm ở tab "Học sinh".</p></div>`}
+    </div>
+
+    <h3 style="font-size:16px;margin-bottom:14px">📄 Nội dung đề thi</h3>
+    <div>
+      ${ex.questions.map((q, i) => `
+        <div class="card" style="padding:20px;margin-bottom:12px">
+          <span class="q-num">Câu ${i + 1}</span>
+          <div class="q-text">${esc(q.text)}</div>
+          <div class="opts">
+            ${q.options.map((o, j) => `
+              <div class="opt" style="${j === q.correct ? 'border-color:#10b981;background:#ecfdf5;cursor:default' : 'cursor:default'}">
+                <span class="opt-key" style="${j === q.correct ? 'background:#10b981;color:#fff' : ''}">${KEY[j]}</span>
+                <span class="opt-text">${esc(o)}</span>
+                ${j === q.correct ? '<span class="tag tag-ok" style="margin-left:auto">Đúng</span>' : ''}
+              </div>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function bindExamDetail(root){
+  root.querySelector('#back-exams').onclick = () => { state.viewExamId = null; render(); };
+
+  const pickAll  = root.querySelector('#pick-all');
+  const pickNone = root.querySelector('#pick-none');
+  if (pickAll)  pickAll.onclick  = () => root.querySelectorAll('[data-stu]').forEach(c => c.checked = true);
+  if (pickNone) pickNone.onclick = () => root.querySelectorAll('[data-stu]').forEach(c => c.checked = false);
+
+  const save = root.querySelector('#save-assign');
+  if (save) save.onclick = async () => {
+    const ids = [...root.querySelectorAll('[data-stu]:checked')].map(c => c.dataset.stu);
+    try {
+      await api('/api/exams/' + state.viewExamId, {
+        method: 'PUT',
+        body: JSON.stringify({ assignedTo: ids })
+      });
+      toast(`Đã giao đề cho ${ids.length} học sinh`);
+      render();
+    } catch (e){ toast(e.message, 'error'); }
+  };
+}
+
+/* =========================================================
+   GIÁO VIÊN — Quản lý học sinh
+   ========================================================= */
+function viewTeacherStudents(){
+  const students = state.studentsCache;
+
+  const rows = students.map(s => `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="avatar" style="width:32px;height:32px;font-size:12px">${esc(initials(s.name))}</div>
+          <div>
+            <div style="font-weight:600">${esc(s.name)}</div>
+            <div class="muted">@${esc(s.username)}</div>
+          </div>
+        </div>
+      </td>
+      <td>—</td><td>—</td>
+    </tr>`).join('');
+
+  return `
+  <div class="page">
+    <div class="page-head">
+      <div><h2>Quản lý học sinh</h2><p>Thêm tài khoản học sinh</p></div>
+    </div>
+
+    <div class="card" style="padding:22px;margin-bottom:22px">
+      <h3 style="font-size:16px;margin-bottom:14px">➕ Thêm học sinh mới</h3>
+      <form id="add-student">
+        <div class="grid-3">
+          <div class="field" style="margin:0"><label>Họ và tên</label>
+            <input class="input" name="name" placeholder="Nguyễn Văn A" required></div>
+          <div class="field" style="margin:0"><label>Tên đăng nhập</label>
+            <input class="input" name="username" placeholder="hocsinh01" required></div>
+          <div class="field" style="margin:0"><label>Mật khẩu</label>
+            <input class="input" name="password" placeholder="Tối thiểu 6 ký tự" required></div>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn btn-primary" type="submit">Thêm học sinh</button>
+        </div>
+      </form>
+    </div>
+
+    <h3 style="font-size:16px;margin-bottom:14px">Danh sách học sinh (${students.length})</h3>
+    ${students.length ? `
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Học sinh</th><th>Số bài</th><th>Điểm cao nhất</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>` : `<div class="card empty"><div class="ico">👥</div><h3>Chưa có học sinh</h3>
+        <p>Học sinh có thể tự đăng ký, hoặc bạn thêm ở trên.</p></div>`}
+  </div>`;
+}
+
+function bindTeacherStudents(root){
+  root.querySelector('#add-student').onsubmit = async e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    try {
+      await api('/api/students', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: f.get('name').trim(),
+          username: f.get('username').trim(),
+          password: f.get('password')
+        })
+      });
+      toast('Đã thêm học sinh');
+      render();
+    } catch (e){ toast(e.message, 'error'); }
+  };
+}
+
+/* =========================================================
+   GIÁO VIÊN — Kết quả
+   ========================================================= */
+function viewTeacherResults(){
+  const results = state.resultsCache;
+
+  const rows = results.map(r => {
+    const pct = r.score / 10;
+    const color = pct >= 0.8 ? '#047857' : pct >= 0.5 ? '#b45309' : '#b91c1c';
+    const bg    = pct >= 0.8 ? '#ecfdf5' : pct >= 0.5 ? '#fffbeb' : '#fef2f2';
+    return `
+      <tr>
+        <td style="font-weight:600">${esc(r.userName)}</td>
+        <td>${esc(r.examTitle)}</td>
+        <td><span class="tag" style="background:${bg};color:${color}">${r.score.toFixed(2)} đ</span></td>
+        <td>${r.correct}/${r.total}</td>
+        <td class="muted">${fmtDate(r.submittedAt)}</td>
+      </tr>`;
+  }).join('');
+
+  return `
+  <div class="page">
+    <div class="page-head">
+      <div><h2>Kết quả thi</h2><p>Bài làm của học sinh cho các đề bạn đã tạo</p></div>
+    </div>
+
+    ${results.length ? `
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Học sinh</th><th>Đề thi</th><th>Điểm</th><th>Đúng</th><th>Nộp lúc</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>` : `
+      <div class="card empty"><div class="ico">📊</div><h3>Chưa có bài làm nào</h3></div>`}
+  </div>`;
+}
+
+/* =========================================================
+   HỌC SINH — Danh sách đề
+   ========================================================= */
+function viewStudentExams(){
+  const exams = state.examsCache;
+  const myResults = state.resultsCache || [];
+
+  const list = exams.length ? `<div class="grid">${exams.map(e => {
+    const attempts = myResults.filter(r => String(r.examId) === String(e._id));
+    const best = attempts.length ? Math.max(...attempts.map(a => a.score)) : null;
+    const done = attempts.length > 0;
+
+    return `
+    <div class="card exam-card">
+      <div class="row-between">
+        <span class="badge badge-subject">${esc(e.subject)}</span>
+        ${done
+          ? `<span class="badge" style="background:#ecfdf5;color:#047857">Đã làm • ${best.toFixed(2)} đ</span>`
+          : `<span class="badge" style="background:#fffbeb;color:#b45309">Chưa làm</span>`}
+      </div>
+      <h3>${esc(e.title)}</h3>
+      <div class="meta-row">
+        <span class="meta-chip">⏱ ${e.duration} phút</span>
+        <span class="meta-chip">📝 ${e.questions.length} câu</span>
+        ${attempts.length > 1 ? `<span class="meta-chip">🔁 ${attempts.length} lần làm</span>` : ''}
+      </div>
+      <div class="card-actions">
+        <button class="btn ${done ? 'btn-ghost' : 'btn-primary'} btn-sm" data-start-exam="${e._id}">
+          ${done ? '🔁 Làm lại' : '▶ Bắt đầu làm bài'}
+        </button>
+      </div>
+    </div>`;
+  }).join('')}</div>` : `
+    <div class="card empty">
+      <div class="ico">📭</div>
+      <h3>Chưa có đề thi nào được giao</h3>
+      <p>Vui lòng chờ giảng viên giao đề cho bạn.</p>
+    </div>`;
+
+  return `
+  <div class="page">
+    <div class="page-head">
+      <div><h2>Đề thi của tôi</h2><p>Chọn một đề để bắt đầu làm bài.</p></div>
+    </div>
+    ${list}
+  </div>`;
+}
+
+function bindStudentExams(root){
+  root.querySelectorAll('[data-start-exam]').forEach(b => {
+    b.onclick = () => {
+      const ex = state.examsCache.find(e => e._id === b.dataset.startExam);
+      if (!ex) return;
+      if (!confirm(`Bắt đầu làm "${ex.title}"?\nThời gian: ${ex.duration} phút • ${ex.questions.length} câu.`)) return;
+
+      state.taking = ex;
+      state.answers = {};
+      state.timeLeft = ex.duration * 60;
+      state.result = null;
+      render();
+      startTimer();
+      window.scrollTo({ top: 0 });
+    };
+  });
+}
+
+/* =========================================================
+   HỌC SINH — Làm bài
+   ========================================================= */
+function viewTaking(){
+  const ex = state.taking;
+  return `
+  <div class="exam-bar">
+    <div class="exam-bar-inner">
+      <div>
+        <div class="exam-title">${esc(ex.title)}</div>
+        <div class="exam-sub">${esc(ex.subject)} • ${ex.questions.length} câu hỏi</div>
+      </div>
+      <div class="timer" id="timer">--:--</div>
+    </div>
+  </div>
+
+  <div class="page" style="padding-bottom:110px">
+    <div>
+      ${ex.questions.map((q, i) => `
+        <div class="card q-card">
+          <span class="q-num">Câu ${i + 1}</span>
+          <div class="q-text">${esc(q.text)}</div>
+          <div class="opts">
+            ${q.options.map((o, j) => `
+              <label class="opt">
+                <input type="radio" name="q${i}" value="${j}" data-answer="${i}">
+                <span class="opt-key">${KEY[j]}</span>
+                <span class="opt-text">${esc(o)}</span>
+              </label>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="submit-bar">
+    <div class="submit-bar-inner">
+      <div style="font-size:14px">
+        Đã trả lời <strong id="answered" style="color:var(--primary)">0</strong>
+        <span class="muted">/ ${ex.questions.length} câu</span>
+      </div>
+      <button class="btn btn-primary" id="submit-exam" style="padding:12px 30px">Nộp bài</button>
+    </div>
+  </div>`;
+}
+
+function bindTaking(){
+  const root = $('#app');
+  root.querySelectorAll('[data-answer]').forEach(r => {
+    r.onchange = () => {
+      state.answers[+r.dataset.answer] = +r.value;
+      const el = root.querySelector('#answered');
+      if (el) el.textContent = Object.keys(state.answers).length;
+    };
+  });
+  root.querySelector('#submit-exam').onclick = () => submitExam(false);
+}
+
+function startTimer(){
+  clearInterval(state.timer);
+  updateTimerUI();
+  state.timer = setInterval(() => {
+    state.timeLeft--;
+    updateTimerUI();
+    if (state.timeLeft <= 0){
+      clearInterval(state.timer); state.timer = null;
+      toast('⏰ Hết giờ! Tự động nộp.', 'warning');
+      submitExam(true);
+    }
+  }, 1000);
+}
+
+function updateTimerUI(){
+  const el = document.getElementById('timer');
+  if (!el) return;
+  el.textContent = fmtTime(state.timeLeft);
+  el.classList.toggle('danger', state.timeLeft <= 60);
+}
+
+async function submitExam(auto){
+  const ex = state.taking;
+  if (!ex) return;
+
+  const answeredCount = Object.keys(state.answers).length;
+  if (!auto){
+    const missing = ex.questions.length - answeredCount;
+    const msg = missing > 0
+      ? `Còn ${missing} câu chưa trả lời.\nVẫn nộp?`
+      : 'Đã trả lời hết. Nộp bài?';
+    if (!confirm(msg)) return;
+  }
+
+  clearInterval(state.timer); state.timer = null;
+
+  let correct = 0;
+  ex.questions.forEach((q, i) => { if (state.answers[i] === q.correct) correct++; });
+  const score = Math.round((correct / ex.questions.length) * 10000) / 1000;
+
+  const btn = document.querySelector('#submit-exam');
+  if (btn){ btn.disabled = true; btn.textContent = 'Đang nộp...'; }
+
+  try {
+    await api('/api/results', {
+      method: 'POST',
+      body: JSON.stringify({
+        examId: ex._id,
+        score, correct, total: ex.questions.length,
+        answers: state.answers
+      })
+    });
+
+    state.result = {
+      exam: ex,
+      result: { score, correct, total: ex.questions.length, answers: { ...state.answers } }
+    };
+    state.taking = null;
+    state.answers = {};
+    toast('Đã nộp bài!');
+    render();
+    window.scrollTo({ top: 0 });
+  } catch (e){
+    toast(e.message, 'error');
+    if (btn){ btn.disabled = false; btn.textContent = 'Nộp bài'; }
+  }
+}
+
+/* =========================================================
+   HỌC SINH — Kết quả
+   ========================================================= */
+function viewResult(){
+  const { exam, result } = state.result;
+  const pct = result.correct / result.total;
+  const grade = pct >= 0.8 ? 'Xuất sắc! 🎉' : pct >= 0.65 ? 'Khá tốt! 👍' : pct >= 0.5 ? 'Trung bình' : 'Cần cố gắng 💪';
+
+  return `
+  <div class="page">
+    <div class="page-head">
+      <div><h2>Kết quả bài thi</h2><p>${esc(exam.title)} • ${esc(exam.subject)}</p></div>
+      <button class="btn btn-ghost" id="back-list">← Danh sách đề</button>
+    </div>
+
+    <div class="score-hero">
+      <div class="num">${result.score.toFixed(2)}</div>
+      <div class="lbl">ĐIỂM SỐ (thang 10)</div>
+      <div class="sub">${grade} • Đúng ${result.correct}/${result.total} câu</div>
+    </div>
+
+    <h3 style="font-size:16px;margin-bottom:14px">🔍 Xem lại bài làm</h3>
+    <div class="card">
+      ${exam.questions.map((q, i) => {
+        const chosen = result.answers[i];
+        const ok = chosen === q.correct;
+        return `
+        <div class="review-item">
+          <div style="display:flex;gap:10px">
+            <span class="q-num" style="margin:0;flex:0 0 auto">Câu ${i + 1}</span>
+            <div style="flex:1">
+              <div style="font-weight:600;margin-bottom:8px">${esc(q.text)}</div>
+              <div class="ans-line">
+                <span class="tag ${chosen === undefined ? 'tag-neutral' : (ok ? 'tag-ok' : 'tag-no')}">
+                  Bạn chọn: ${chosen === undefined ? 'Chưa' : KEY[chosen]}
+                </span>
+                ${!ok ? `<span class="tag tag-ok">Đúng: ${KEY[q.correct]}</span>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div style="margin-top:22px;text-align:center">
+      <button class="btn btn-primary" id="back-list-2" style="padding:12px 30px">Về danh sách đề</button>
+    </div>
+  </div>`;
+}
+
+function bindResult(root){
+  const back = () => { state.result = null; render(); window.scrollTo({ top: 0 }); };
+  const b1 = root.querySelector('#back-list');
+  const b2 = root.querySelector('#back-list-2');
+  if (b1) b1.onclick = back;
+  if (b2) b2.onclick = back;
+}
+
+/* =========================================================
+   KHỞI ĐỘNG
+   ========================================================= */
+(async function init(){
+  if (TOKEN){
+    try {
+      const u = await api('/api/me');
+      state.user = u;
+    } catch {
+      localStorage.removeItem('khaothi_token');
+      TOKEN = '';
+    }
+  }
+  render();
+})();
+</script>
+</body>
+</html>
