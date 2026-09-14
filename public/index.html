@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Khảo thí THPTQG — Hệ thống thi thử trực tuyến</title>
+<link rel="icon" type="image/jpeg" href="/favicon.jpg">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -15,7 +16,7 @@
 body{font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
 button{font-family:inherit}
 .muted{color:var(--muted);font-size:13.5px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:10px;border:none;font-weight:600;font-size:14px;cursor:pointer;transition:.18s;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:10px;border:none;font-weight:600;font-size:14px;cursor:pointer;transition:.18s;white-space:nowrap;text-decoration:none}
 .btn:active{transform:scale(.97)}
 .btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 14px -4px rgba(99,102,241,.6)}
 .btn-primary:hover{background:var(--primary-d)}
@@ -25,20 +26,58 @@ button{font-family:inherit}
 .btn-danger:hover{background:#fee2e2}
 .btn-sm{padding:7px 12px;font-size:13px;border-radius:8px}
 .btn-block{width:100%}
+.btn-lg{padding:14px 28px;font-size:15.5px;border-radius:12px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:#fff;transition:.15s;color:var(--text)}
 .input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
 textarea.input{resize:vertical;line-height:1.6}
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .field label{font-size:13px;font-weight:600;color:#334155}
+
+/* ---------- Landing page ---------- */
+.landing{min-height:100vh;display:flex;flex-direction:column;
+  background:
+   radial-gradient(900px 500px at 8% 0%,#c7d2fe 0%,transparent 55%),
+   radial-gradient(900px 500px at 95% 100%,#bfdbfe 0%,transparent 50%),
+   linear-gradient(140deg,#eef2ff,#f8fafc)}
+.landing-nav{max-width:1200px;margin:0 auto;width:100%;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.landing-logo{display:flex;align-items:center;gap:12px;font-weight:800;font-size:17px;letter-spacing:-.3px}
+.landing-logo img{width:44px;height:44px;border-radius:12px;object-fit:cover;box-shadow:0 6px 16px -8px rgba(99,102,241,.95)}
+.landing-logo .fallback{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff}
+.landing-nav-actions{display:flex;gap:10px}
+
+.hero{max-width:1200px;margin:0 auto;width:100%;padding:50px 24px 30px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center}
+.hero-badge{display:inline-block;background:#fff;border:1px solid var(--border);padding:6px 14px;border-radius:999px;
+  font-size:12.5px;font-weight:700;color:var(--primary-d);margin-bottom:22px;box-shadow:0 4px 16px -8px rgba(99,102,241,.4)}
+.hero h1{font-size:clamp(32px,5vw,52px);line-height:1.15;letter-spacing:-1.5px;font-weight:900;margin-bottom:18px}
+.hero h1 .grad{background:linear-gradient(135deg,#6366f1,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:clamp(15px,2vw,18px);color:var(--muted);max-width:640px;margin:0 auto 32px;line-height:1.65}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:60px}
+.hero-actions .btn-primary{box-shadow:0 12px 30px -10px rgba(99,102,241,.7)}
+
+.features{max-width:1200px;margin:0 auto;width:100%;padding:0 24px 70px;display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.feature-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:26px 24px;box-shadow:var(--shadow);transition:.25s}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 24px 50px -25px rgba(15,23,42,.5)}
+.feature-icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:26px;margin-bottom:16px;
+  background:linear-gradient(135deg,#eef2ff,#e0e7ff)}
+.feature-card h3{font-size:17px;margin-bottom:8px;letter-spacing:-.2px}
+.feature-card p{color:var(--muted);font-size:14px;line-height:1.6}
+
+.landing-footer{text-align:center;padding:24px;font-size:13px;color:var(--muted);border-top:1px solid var(--border);background:rgba(255,255,255,.5)}
+
+/* ---------- Auth ---------- */
 .auth-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;
-  background:radial-gradient(900px 500px at 8% 0%,#c7d2fe 0%,transparent 55%),
-  radial-gradient(900px 500px at 95% 100%,#bfdbfe 0%,transparent 50%),
-  linear-gradient(140deg,#eef2ff,#f8fafc)}
-.auth-card{width:100%;max-width:430px;background:#fff;border-radius:22px;padding:34px 32px;box-shadow:0 30px 70px -30px rgba(30,41,59,.45);border:1px solid rgba(255,255,255,.7)}
-.brand{text-align:center;margin-bottom:24px}
+  background:
+   radial-gradient(900px 500px at 8% 0%,#c7d2fe 0%,transparent 55%),
+   radial-gradient(900px 500px at 95% 100%,#bfdbfe 0%,transparent 50%),
+   linear-gradient(140deg,#eef2ff,#f8fafc)}
+.auth-card{width:100%;max-width:430px;background:#fff;border-radius:22px;padding:34px 32px;box-shadow:0 30px 70px -30px rgba(30,41,59,.45);border:1px solid rgba(255,255,255,.7);position:relative}
+.back-home{position:absolute;top:20px;left:20px;background:transparent;border:none;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;padding:6px 10px;border-radius:8px;transition:.15s}
+.back-home:hover{background:#f1f5f9;color:var(--primary)}
+.brand{text-align:center;margin-bottom:24px;padding-top:14px}
 .brand-logo{width:62px;height:62px;margin:0 auto 12px;border-radius:18px;display:grid;place-items:center;font-size:30px;
-  background:linear-gradient(135deg,var(--primary),#8b5cf6);box-shadow:0 12px 26px -10px rgba(99,102,241,.9)}
+  background:linear-gradient(135deg,var(--primary),#8b5cf6);box-shadow:0 12px 26px -10px rgba(99,102,241,.9);overflow:hidden}
+.brand-logo img{width:100%;height:100%;object-fit:cover}
 .brand h1{font-size:22px;letter-spacing:-.4px}
 .brand p{color:var(--muted);font-size:13.5px;margin-top:3px}
 .tabs{display:flex;gap:6px;background:#f1f5f9;padding:5px;border-radius:12px}
@@ -46,10 +85,13 @@ textarea.input{resize:vertical;line-height:1.6}
 .tab.active{background:#fff;color:var(--primary);box-shadow:0 1px 4px rgba(15,23,42,.1)}
 .notice{padding:11px 14px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;
   font-size:12.5px;color:#1e40af;margin-bottom:14px;line-height:1.5}
+
+/* ---------- Topbar ---------- */
 .topbar{background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
 .topbar-inner{max-width:1100px;margin:0 auto;padding:0 20px;height:66px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:16px;letter-spacing:-.3px}
-.logo-mark{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;box-shadow:0 6px 16px -8px rgba(99,102,241,.95)}
+.logo-mark{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;box-shadow:0 6px 16px -8px rgba(99,102,241,.95);overflow:hidden}
+.logo-mark img{width:100%;height:100%;object-fit:cover}
 .user-box{display:flex;align-items:center;gap:12px}
 .avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;font-size:14px;background:linear-gradient(135deg,#6366f1,#a855f7)}
 .user-meta{line-height:1.25;text-align:right}
@@ -59,31 +101,38 @@ textarea.input{resize:vertical;line-height:1.6}
 .badge-student{background:#dbeafe;color:#1d4ed8}
 .badge-subject{background:#ecfdf5;color:#047857}
 .badge-gray{background:#f1f5f9;color:#475569}
+
 .subhead{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:66px;z-index:45}
 .subhead-inner{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;gap:8px;overflow-x:auto}
+
 .page{padding:28px 20px 80px;max-width:1100px;margin:0 auto}
 .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
 .page-head h2{font-size:22px;letter-spacing:-.4px}
 .page-head p{color:var(--muted);font-size:13.5px;margin-top:2px}
+
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
 .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
 .grid-3{display:grid;gap:14px;grid-template-columns:1fr 1fr 160px}
 @media(max-width:700px){.grid-3{grid-template-columns:1fr}}
+
 .exam-card{padding:20px;display:flex;flex-direction:column;gap:12px;transition:.2s}
 .exam-card:hover{transform:translateY(-3px);box-shadow:0 20px 40px -24px rgba(15,23,42,.5)}
 .exam-card h3{font-size:16.5px;letter-spacing:-.2px}
 .meta-row{display:flex;flex-wrap:wrap;gap:8px;font-size:12.5px;color:var(--muted)}
 .meta-chip{background:#f8fafc;border:1px solid var(--border);padding:4px 10px;border-radius:8px;font-weight:600;color:#475569}
 .card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty .ico{font-size:46px;margin-bottom:12px;opacity:.6}
 .empty h3{color:var(--text);font-size:16px;margin-bottom:6px}
+
 .q-edit-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
 @media(max-width:700px){.opt-grid{grid-template-columns:1fr}}
 .opt-edit{display:flex;align-items:center;gap:9px}
 .opt-radio{display:flex;align-items:center;gap:6px;cursor:pointer;flex:0 0 auto;font-weight:700;font-size:13px;color:#64748b}
 .opt-radio input{width:17px;height:17px;accent-color:var(--primary);cursor:pointer}
+
 .exam-bar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;box-shadow:0 6px 20px -18px rgba(15,23,42,.5)}
 .exam-bar-inner{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .exam-title{font-weight:800;font-size:16px;letter-spacing:-.3px}
@@ -103,8 +152,10 @@ textarea.input{resize:vertical;line-height:1.6}
 .opt-text{font-size:14.5px}
 .opt:has(input:checked){border-color:var(--primary);background:var(--primary-l)}
 .opt:has(input:checked) .opt-key{background:var(--primary);color:#fff}
+
 .submit-bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);z-index:60;box-shadow:0 -6px 24px -18px rgba(15,23,42,.6)}
 .submit-bar-inner{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+
 .score-hero{text-align:center;padding:38px 24px;border-radius:20px;margin-bottom:22px;color:#fff;
   background:linear-gradient(135deg,#6366f1,#8b5cf6 55%,#a855f7)}
 .score-hero .num{font-size:60px;font-weight:900;letter-spacing:-2px;line-height:1}
@@ -117,16 +168,19 @@ textarea.input{resize:vertical;line-height:1.6}
 .tag-ok{background:#ecfdf5;color:#047857}
 .tag-no{background:#fef2f2;color:#b91c1c}
 .tag-neutral{background:#f1f5f9;color:#475569}
+
 .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:#fff;box-shadow:var(--shadow)}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{text-align:left;padding:13px 16px;background:#f8fafc;font-size:12.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--border);white-space:nowrap}
 td{padding:13px 16px;border-bottom:1px solid #f1f5f9}
 tr:last-child td{border-bottom:none}
 tbody tr:hover{background:#fafbff}
+
 .pick{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;transition:.15s;background:#fff}
 .pick:hover{border-color:#c7d2fe;background:#fafbff}
 .pick input{width:18px;height:18px;accent-color:var(--primary);cursor:pointer}
 .pick:has(input:checked){border-color:var(--primary);background:var(--primary-l)}
+
 #toast{position:fixed;right:22px;bottom:22px;z-index:999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
 .toast{padding:13px 20px;border-radius:12px;background:#0f172a;color:#fff;font-size:14px;font-weight:600;
   box-shadow:0 16px 40px -14px rgba(15,23,42,.7);opacity:0;transform:translateY(14px);transition:.3s}
@@ -134,6 +188,7 @@ tbody tr:hover{background:#fafbff}
 .toast.success{background:linear-gradient(135deg,#059669,#10b981)}
 .toast.error{background:linear-gradient(135deg,#dc2626,#ef4444)}
 .toast.warning{background:linear-gradient(135deg,#d97706,#f59e0b)}
+
 .divider{height:1px;background:var(--border);margin:18px 0}
 .row-between{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
 </style>
@@ -145,11 +200,12 @@ tbody tr:hover{background:#fafbff}
 <script>
 /* =========================================================
    KHẢO THÍ THPTQG — Frontend gọi API
+   - Trang chủ: giới thiệu + nút Đăng nhập/Đăng ký
    - Đăng ký CHỈ tạo HỌC SINH
-   - Giảng viên mặc định: Hbinh / Hb@22052007 (seed ở backend)
+   - Giảng viên mặc định: Hbinh / Hb@22052007
    ========================================================= */
 
-/* ---------------- Utilities (DUY NHẤT 1 LẦN) ---------------- */
+/* ---------------- Utilities ---------------- */
 const $  = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const KEY = 'ABCD';
@@ -183,6 +239,7 @@ async function api(path, opts = {}) {
 
 /* ---------------- State ---------------- */
 const state = {
+  page: 'home',          // 'home' | 'auth'
   user: null,
   authTab: 'login',
   tab: 'exams',
@@ -214,12 +271,27 @@ function toast(msg, type = 'success'){
    ========================================================= */
 async function render(){
   const root = $('#app');
+
+  // Chưa đăng nhập → trang chủ hoặc trang auth
   if (!state.user){
-    root.innerHTML = viewAuth();
-    bindAuth();
+    if (state.page === 'home'){
+      root.innerHTML = viewHome();
+      bindHome();
+    } else {
+      root.innerHTML = viewAuth();
+      bindAuth();
+    }
     return;
   }
-  if (state.taking){ root.innerHTML = viewTaking(); bindTaking(); return; }
+
+  // Đang làm bài
+  if (state.taking){
+    root.innerHTML = viewTaking();
+    bindTaking();
+    return;
+  }
+
+  // Đã đăng nhập
   await loadData();
   root.innerHTML = viewApp();
   bindApp();
@@ -241,19 +313,96 @@ async function loadData(){
       localStorage.removeItem('khaothi_token');
       TOKEN = '';
       state.user = null;
+      state.page = 'home';
       render();
     }
   }
 }
 
-/* ---------------- Auth view ---------------- */
+/* =========================================================
+   TRANG CHỦ (LANDING PAGE)
+   ========================================================= */
+function viewHome(){
+  return `
+  <div class="landing">
+    <nav class="landing-nav">
+      <div class="landing-logo">
+        <img src="/favicon.jpg" alt="PTIT" onerror="this.outerHTML='<div class=\\'fallback\\'>🎓</div>'">
+        <span>Khảo thí THPTQG</span>
+      </div>
+      <div class="landing-nav-actions">
+        <button class="btn btn-ghost btn-sm" data-home-action="login">Đăng nhập</button>
+        <button class="btn btn-primary btn-sm" data-home-action="register">Đăng ký</button>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <span class="hero-badge">✨ Hệ thống thi thử trực tuyến</span>
+      <h1>Khảo thí <span class="grad">THPTQG</span><br>hiệu quả &amp; hiện đại</h1>
+      <p class="lead">
+        Nền tảng thi thử trực tuyến dành cho giáo viên và học sinh.
+        Tạo đề nhanh, giao bài dễ, chấm điểm tự động và xem kết quả tức thì.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" data-home-action="register">
+          🎒 Bắt đầu làm bài
+        </button>
+        <button class="btn btn-ghost btn-lg" data-home-action="login">
+          👨‍🏫 Đăng nhập giảng viên
+        </button>
+      </div>
+
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3>Tạo đề dễ dàng</h3>
+          <p>Giảng viên soạn đề trắc nghiệm với đầy đủ câu hỏi, đáp án và thời gian làm bài chỉ trong vài phút.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⏱️</div>
+          <h3>Làm bài có đồng hồ</h3>
+          <p>Học sinh làm bài với đồng hồ đếm ngược, tự động nộp khi hết giờ. Giao diện thân thiện, dễ dùng.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Chấm điểm tự động</h3>
+          <p>Kết quả hiển thị ngay sau khi nộp. Giáo viên theo dõi điểm của cả lớp trong một bảng tổng hợp.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="landing-footer">
+      © 2025 Khảo thí THPTQG · Hệ thống thi thử trực tuyến
+    </footer>
+  </div>`;
+}
+
+function bindHome(){
+  document.querySelectorAll('[data-home-action]').forEach(b => {
+    b.onclick = () => {
+      const action = b.dataset.homeAction;
+      state.page = 'auth';
+      state.authTab = action === 'register' ? 'register' : 'login';
+      render();
+      window.scrollTo({ top: 0 });
+    };
+  });
+}
+
+/* =========================================================
+   TRANG ĐĂNG NHẬP / ĐĂNG KÝ
+   ========================================================= */
 function viewAuth(){
   const isReg = state.authTab === 'register';
   return `
   <div class="auth-wrap">
     <div class="auth-card">
+      <button class="back-home" id="back-home">← Về trang chủ</button>
+
       <div class="brand">
-        <div class="brand-logo">🎓</div>
+        <div class="brand-logo">
+          <img src="/favicon.jpg" alt="PTIT" onerror="this.outerHTML='🎓'">
+        </div>
         <h1>Khảo thí THPTQG</h1>
         <p>Hệ thống thi thử trực tuyến</p>
       </div>
@@ -288,6 +437,9 @@ function viewAuth(){
 }
 
 function bindAuth(){
+  const bh = $('#back-home');
+  if (bh) bh.onclick = () => { state.page = 'home'; render(); };
+
   document.querySelectorAll('[data-auth-tab]').forEach(b => {
     b.onclick = () => { state.authTab = b.dataset.authTab; render(); };
   });
@@ -320,7 +472,9 @@ function bindAuth(){
   };
 }
 
-/* ---------------- App shell ---------------- */
+/* =========================================================
+   APP SHELL (sau khi đăng nhập)
+   ========================================================= */
 function viewApp(){
   const u = state.user;
   const isTeacher = u.role === 'teacher';
@@ -352,7 +506,9 @@ function viewApp(){
   <div class="topbar">
     <div class="topbar-inner">
       <div class="logo">
-        <div class="logo-mark">🎓</div>
+        <div class="logo-mark">
+          <img src="/favicon.jpg" alt="PTIT" onerror="this.outerHTML='🎓'">
+        </div>
         <span>Khảo thí THPTQG</span>
       </div>
       <div class="user-box">
@@ -378,7 +534,7 @@ function bindApp(){
     clearInterval(state.timer); state.timer = null;
     localStorage.removeItem('khaothi_token');
     TOKEN = '';
-    Object.assign(state, { user:null, tab:'exams', draft:null, viewExamId:null, result:null, taking:null, answers:{}, timeLeft:0, examsCache:[], studentsCache:[], resultsCache:[] });
+    Object.assign(state, { user:null, page:'home', tab:'exams', draft:null, viewExamId:null, result:null, taking:null, answers:{}, timeLeft:0, examsCache:[], studentsCache:[], resultsCache:[] });
     render();
   };
 
@@ -1068,6 +1224,8 @@ function bindResult(root){
     } catch {
       localStorage.removeItem('khaothi_token');
       TOKEN = '';
+      state.user = null;
+      state.page = 'home';
     }
   }
   render();
